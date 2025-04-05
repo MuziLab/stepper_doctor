@@ -21,5 +21,7 @@
 
 
 void half_duplex_uart_init(uint32_t baudrate);//实现初始化
+HAL_StatusTypeDef half_duplex_uart_transmit(uint8_t *pData, uint16_t Size, uint32_t Timeout);//阻塞性发送
+HAL_StatusTypeDef half_duplex_uart_receive(uint8_t *pData, uint16_t Size, uint32_t Timeout);//阻塞性接受
 
 
