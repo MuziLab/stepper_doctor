@@ -3,6 +3,7 @@
         "pulse.h": "c",
         "delay.h": "c",
         "atim.h": "c",
-        "half_duplex_uart.h": "c"
+        "half_duplex_uart.h": "c",
+        "uart.h": "c"
     }
 }

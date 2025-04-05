@@ -423,11 +423,6 @@
               <FileType>1</FileType>
               <FilePath>..\..\Drivers\SYSTEM\delay\delay.c</FilePath>
             </File>
-            <File>
-              <FileName>usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Drivers\SYSTEM\usart\usart.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -509,9 +504,9 @@
               <FilePath>..\..\Drivers\BSP\PULSE\pulse.c</FilePath>
             </File>
             <File>
-              <FileName>half_duplex_uart.c</FileName>
+              <FileName>uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\Drivers\BSP\UART\half_duplex_uart.c</FilePath>
+              <FilePath>..\..\Drivers\BSP\UART\uart.c</FilePath>
             </File>
           </Files>
         </Group>

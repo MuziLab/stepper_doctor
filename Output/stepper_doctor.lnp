@@ -5,7 +5,6 @@
 "..\..\output\system_stm32f1xx.o"
 "..\..\output\sys.o"
 "..\..\output\delay.o"
-"..\..\output\usart.o"
 "..\..\output\stm32f1xx_hal.o"
 "..\..\output\stm32f1xx_hal_cortex.o"
 "..\..\output\stm32f1xx_hal_dma.o"
@@ -18,7 +17,7 @@
 "..\..\output\stm32f1xx_hal_tim.o"
 "..\..\output\stm32f1xx_hal_tim_ex.o"
 "..\..\output\pulse.o"
-"..\..\output\half_duplex_uart.o"
+"..\..\output\uart.o"
 --strict --scatter "..\..\Output\stepper_doctor.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

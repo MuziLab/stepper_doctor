@@ -3,14 +3,35 @@
 #include "stdio.h"
 #include "./SYSTEM/sys/sys.h"
 
+
+
+//全双工
 #define USART_TX_GPIO_PORT                  GPIOA
-#define USART_TX_GPIO_PIN                   GPIO_PIN_2
+#define USART_TX_GPIO_PIN                   GPIO_PIN_9
 #define USART_TX_GPIO_CLK_ENABLE()          do{ __HAL_RCC_GPIOA_CLK_ENABLE(); }while(0)   /* PA口时钟使能 */
+
+#define USART_RX_GPIO_PORT                  GPIOA
+#define USART_RX_GPIO_PIN                   GPIO_PIN_10
+#define USART_RX_GPIO_CLK_ENABLE()          do{ __HAL_RCC_GPIOA_CLK_ENABLE(); }while(0)   /* PA口时钟使能 */
+
+#define USART_UX                            USART1
+#define USART_UX_IRQn                       USART1_IRQn
+#define USART_UX_IRQHandler                 USART1_IRQHandler
+#define USART_UX_CLK_ENABLE()               do{ __HAL_RCC_USART1_CLK_ENABLE(); }while(0)  /* USART1 时钟使能 */
+
+
+
+//半双工配置
+#define HALF_DUPLEX_USART_TX_GPIO_PORT                  GPIOA
+#define HALF_DUPLEX_USART_TX_GPIO_PIN                   GPIO_PIN_2
+#define HALF_DUPLEX_USART_TX_GPIO_CLK_ENABLE()          do{ __HAL_RCC_GPIOA_CLK_ENABLE(); }while(0)   /* PA口时钟使能 */
 
 #define HALF_DUPLEX_USART_UX                            USART2
 #define HALF_DUPLEX_USART_UX_IRQn                       USART2_IRQn
 #define HALF_DUPLEX_USART_UX_IRQHandler                 USART2_IRQHandler
 #define HALF_DUPLEX_USART_UX_CLK_ENABLE()               do{ __HAL_RCC_USART2_CLK_ENABLE(); }while(0)  /* USART1 时钟使能 */
+
+
 
 
 #define BUFFER_SIZE_FOR_USART1 1
