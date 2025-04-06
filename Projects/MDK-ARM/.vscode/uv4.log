@@ -1,13 +1,8 @@
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\MDK5.36\ARM\ARMCC\Bin'
 Build target 'stepper_doctor'
-compiling uart.c...
+compiling tmc2209.c...
+compiling main.c...
 linking...
-..\..\Output\stepper_doctor.axf: Error: L6200E: Symbol USART1_IRQHandler multiply defined (by uart.o and usart.o).
-..\..\Output\stepper_doctor.axf: Error: L6200E: Symbol HAL_UART_MspInit multiply defined (by uart.o and usart.o).
-..\..\Output\stepper_doctor.axf: Error: L6200E: Symbol HAL_UART_RxCpltCallback multiply defined (by uart.o and usart.o).
-Not enough information to list image symbols.
-Not enough information to list load addresses in the image map.
-Finished: 2 information, 0 warning and 3 error messages.
-"..\..\Output\stepper_doctor.axf" - 3 Error(s), 0 Warning(s).
-Target not created.
-Build Time Elapsed:  00:00:01
+Program Size: Code=8008 RO-data=360 RW-data=28 ZI-data=1828  
+"..\..\Output\stepper_doctor.axf" - 0 Error(s), 0 Warning(s).
+Build Time Elapsed:  00:00:02

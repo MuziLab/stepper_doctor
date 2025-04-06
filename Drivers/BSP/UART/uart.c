@@ -165,6 +165,11 @@ void USART_UX_IRQHandler(void)
 }
 
 
+HAL_StatusTypeDef uart_transmit(uint8_t *pData, uint16_t Size, uint32_t Timeout)
+{
+    return HAL_UART_Transmit(&handle_for_uart,pData,Size,Timeout);
+}
+
 
 
 

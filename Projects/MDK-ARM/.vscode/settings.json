@@ -4,6 +4,7 @@
         "delay.h": "c",
         "atim.h": "c",
         "half_duplex_uart.h": "c",
-        "uart.h": "c"
+        "uart.h": "c",
+        "tmc2209.h": "c"
     }
 }

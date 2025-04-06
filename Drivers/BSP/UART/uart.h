@@ -22,14 +22,14 @@
 
 
 //半双工配置
-#define HALF_DUPLEX_USART_TX_GPIO_PORT                  GPIOA
-#define HALF_DUPLEX_USART_TX_GPIO_PIN                   GPIO_PIN_2
-#define HALF_DUPLEX_USART_TX_GPIO_CLK_ENABLE()          do{ __HAL_RCC_GPIOA_CLK_ENABLE(); }while(0)   /* PA口时钟使能 */
+#define HALF_DUPLEX_USART_TX_GPIO_PORT                  GPIOB
+#define HALF_DUPLEX_USART_TX_GPIO_PIN                   GPIO_PIN_10
+#define HALF_DUPLEX_USART_TX_GPIO_CLK_ENABLE()          do{ __HAL_RCC_GPIOB_CLK_ENABLE(); }while(0)   /* PA口时钟使能 */
 
-#define HALF_DUPLEX_USART_UX                            USART2
-#define HALF_DUPLEX_USART_UX_IRQn                       USART2_IRQn
-#define HALF_DUPLEX_USART_UX_IRQHandler                 USART2_IRQHandler
-#define HALF_DUPLEX_USART_UX_CLK_ENABLE()               do{ __HAL_RCC_USART2_CLK_ENABLE(); }while(0)  /* USART1 时钟使能 */
+#define HALF_DUPLEX_USART_UX                            USART3
+#define HALF_DUPLEX_USART_UX_IRQn                       USART3_IRQn
+#define HALF_DUPLEX_USART_UX_IRQHandler                 USART3_IRQHandler
+#define HALF_DUPLEX_USART_UX_CLK_ENABLE()               do{ __HAL_RCC_USART3_CLK_ENABLE(); }while(0)  /* USART1 时钟使能 */
 
 
 
@@ -46,3 +46,5 @@ HAL_StatusTypeDef half_duplex_uart_transmit(uint8_t *pData, uint16_t Size, uint3
 HAL_StatusTypeDef half_duplex_uart_receive(uint8_t *pData, uint16_t Size, uint32_t Timeout);//阻塞性接受
 
 
+void uart_init(uint32_t baudrate);
+HAL_StatusTypeDef uart_transmit(uint8_t *pData, uint16_t Size, uint32_t Timeout);

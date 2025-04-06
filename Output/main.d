@@ -59,3 +59,6 @@
 ..\..\output\main.o: ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_mmc.h
 ..\..\output\main.o: ..\..\Drivers\./SYSTEM/delay/delay.h
 ..\..\output\main.o: ..\..\Drivers\./BSP/PULSE/pulse.h
+..\..\output\main.o: ..\..\Drivers\./BSP/UART/uart.h
+..\..\output\main.o: C:\MDK5.36\ARM\ARMCC\Bin\..\include\stdio.h
+..\..\output\main.o: ..\..\Drivers\./BSP/TMC2209/tmc2209.h

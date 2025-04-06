@@ -115,7 +115,8 @@
                 "c:\\Users\\33746\\Desktop\\graduation\\工程目录之步进电机\\stepper_doctor\\Drivers\\STM32F1xx_HAL_Driver\\Src",
                 "c:\\Users\\33746\\Desktop\\graduation\\工程目录之步进电机\\stepper_doctor",
                 "c:\\Users\\33746\\Desktop\\graduation\\工程目录之步进电机\\stepper_doctor\\Drivers\\BSP\\PULSE",
-                "c:\\Users\\33746\\Desktop\\graduation\\工程目录之步进电机\\stepper_doctor\\Drivers\\BSP\\UART"
+                "c:\\Users\\33746\\Desktop\\graduation\\工程目录之步进电机\\stepper_doctor\\Drivers\\BSP\\UART",
+                "c:\\Users\\33746\\Desktop\\graduation\\工程目录之步进电机\\stepper_doctor\\Drivers\\BSP\\TMC2209"
             ],
             "defines": [
                 "USE_HAL_DRIVER",
