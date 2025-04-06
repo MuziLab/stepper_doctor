@@ -5,7 +5,7 @@
 
 
 
-//全双工
+//usb串口
 #define USART_TX_GPIO_PORT                  GPIOA
 #define USART_TX_GPIO_PIN                   GPIO_PIN_9
 #define USART_TX_GPIO_CLK_ENABLE()          do{ __HAL_RCC_GPIOA_CLK_ENABLE(); }while(0)   /* PA口时钟使能 */
@@ -32,10 +32,24 @@
 #define HALF_DUPLEX_USART_UX_CLK_ENABLE()               do{ __HAL_RCC_USART3_CLK_ENABLE(); }while(0)  /* USART1 时钟使能 */
 
 
+//全双工配置（用uart4）
+
+#define FULL_DUPLEX_USART_TX_GPIO_PORT                  GPIOC
+#define FULL_DUPLEX_USART_TX_GPIO_PIN                   GPIO_PIN_10
+#define FULL_DUPLEX_USART_TX_GPIO_CLK_ENABLE()          do{ __HAL_RCC_GPIOC_CLK_ENABLE(); }while(0)  
+
+#define FULL_DUPLEX_USART_RX_GPIO_PORT                  GPIOC
+#define FULL_DUPLEX_USART_RX_GPIO_PIN                   GPIO_PIN_11
+#define FULL_DUPLEX_USART_RX_GPIO_CLK_ENABLE()          do{ __HAL_RCC_GPIOC_CLK_ENABLE(); }while(0)   
+
+#define FULL_DUPLEX_USART_UX                            UART4
+#define FULL_DUPLEX_USART_UX_IRQn                       UART4_IRQn
+#define FULL_DUPLEX_USART_UX_IRQHandler                 UART4_IRQHandler
+#define FULL_DUPLEX_USART_UX_CLK_ENABLE()               do{ __HAL_RCC_UART4_CLK_ENABLE(); }while(0)  /* USART1 时钟使能 */
 
 
 #define BUFFER_SIZE_FOR_USART1 1
-
+#define BUFFER_SIZE_FOR_UART4  8//byte数
 
 // 头文件内容，这里需要明确自己要什么，总目标是用pa9,10实现串口通信
 //这个文件不是面向用户的，自己写就行，没必要整好用的api
@@ -44,6 +58,10 @@
 void half_duplex_uart_init(uint32_t baudrate);//实现初始化
 HAL_StatusTypeDef half_duplex_uart_transmit(uint8_t *pData, uint16_t Size, uint32_t Timeout);//阻塞性发送
 HAL_StatusTypeDef half_duplex_uart_receive(uint8_t *pData, uint16_t Size, uint32_t Timeout);//阻塞性接受
+
+void full_duplex_uart_init(uint32_t baudrate);//实现初始化
+HAL_StatusTypeDef full_duplex_uart_transmit(uint8_t *pData, uint16_t Size, uint32_t Timeout);//阻塞性发送
+HAL_StatusTypeDef full_duplex_uart_receive(uint8_t *pData, uint16_t Size, uint32_t Timeout);//阻塞性发送
 
 
 void uart_init(uint32_t baudrate);

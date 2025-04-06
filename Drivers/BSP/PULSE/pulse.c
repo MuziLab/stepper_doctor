@@ -49,9 +49,9 @@ void palse_init(uint16_t arr, uint16_t psc)
     TIM_OC_InitTypeDef timx_oc_npwm_chy; /* 定时器输出 */
     PALSE_GPIO_CLK_ENABLE();             /* TIMX 通道IO口时钟使能 */
     PALSE_TIMER_CHY_CLK_ENABLE();        /* TIMX 时钟使能 */
-    if (HAL_TIM_Base_Init(&palse_timer_chy_handle) != HAL_OK) {
-        // TODO: hal错误处理
-    }
+    // if (HAL_TIM_Base_Init(&palse_timer_chy_handle) != HAL_OK) {
+    //     // TODO: hal错误处理
+    // }
 
     palse_timer_chy_handle.Instance = PALSE_TIMER;                                 /* 定时器x */
     palse_timer_chy_handle.Init.Prescaler = psc;                                   /* 定时器分频 */
