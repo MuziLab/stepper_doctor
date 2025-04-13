@@ -1,11 +1,15 @@
 
 #include "./BSP/PULSE/pulse.h"
 TIM_HandleTypeDef palse_timer_chy_handle; /* 定时器x句柄 */
+TIM_HandleTypeDef palse_timer_chy_handle_2; 
+
+
 
 /* g_npwm_remain表示当前还剩下多少个脉冲要发送
  * 每次最多发送256个脉冲
  */
 static uint32_t g_npwm_remain = 0;
+static uint32_t g_npwm_remain_2 = 0;
 
 /**
  * @brief       高级定时器TIMX 通道Y 输出指定个数PWM 初始化函数
@@ -56,6 +60,48 @@ void palse_init(uint16_t arr, uint16_t psc)
     HAL_TIM_PWM_Start(&palse_timer_chy_handle, PALSE_TIMER_CHY); /* 开启对应PWM通道 */
 }
 
+
+/**
+ * @brief 多通道定时器，固定通道，固定50%占空比,默认最佳分频
+ * 
+ */
+
+void palse_init_2(uint16_t arr, uint16_t psc)
+{
+    GPIO_InitTypeDef gpio_init_struct;
+    TIM_OC_InitTypeDef timx_oc_npwm_chy; /* 定时器输出 */
+    PALSE_GPIO_CLK_ENABLE_2();             /* TIMX 通道IO口时钟使能 */
+    PALSE_TIMER_CHY_CLK_ENABLE_2();        /* TIMX 时钟使能 */
+    // if (HAL_TIM_Base_Init(&palse_timer_chy_handle) != HAL_OK) {
+    //     // TODO: hal错误处理
+    // }
+
+    palse_timer_chy_handle_2.Instance = PALSE_TIMER_2;                                 /* 定时器x */
+    palse_timer_chy_handle_2.Init.Prescaler = psc;                                   /* 定时器分频 */
+    palse_timer_chy_handle_2.Init.CounterMode = TIM_COUNTERMODE_UP;                  /* 递增计数模式 */
+    palse_timer_chy_handle_2.Init.Period = arr;                                      /* 自动重装载值 */
+    palse_timer_chy_handle_2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE; /*使能TIMx_ARR进行缓冲 */
+    palse_timer_chy_handle_2.Init.RepetitionCounter = 0;                             /* 重复计数器初始值 */
+    HAL_TIM_PWM_Init(&palse_timer_chy_handle_2);                                     /* 初始化PWM */
+
+    gpio_init_struct.Pin = PALSE_OUT_GPIO_PIN_2;     /* 通道y的CPIO口 */
+    gpio_init_struct.Mode = GPIO_MODE_AF_PP;       /* 复用推挽输出 */
+    gpio_init_struct.Pull = GPIO_PULLUP;           /* 上拉? */
+    gpio_init_struct.Speed = GPIO_SPEED_FREQ_HIGH; /* 高速 */
+    HAL_GPIO_Init(PALSE_OUT_GPIO_PORT_2, &gpio_init_struct);
+
+    timx_oc_npwm_chy.OCMode = TIM_OCMODE_PWM1;                                              /* 模式选择PWM 1*/
+    timx_oc_npwm_chy.Pulse = arr / 2;                                                       /* 设置比较值,此值用来确定占空比 */
+                                                                                            /* 这里默认设置比较值为自动重装载值的一半,即占空比为50% */
+    timx_oc_npwm_chy.OCPolarity = TIM_OCPOLARITY_HIGH;                                      /* 输出比较极性为高 */
+    HAL_TIM_PWM_ConfigChannel(&palse_timer_chy_handle_2, &timx_oc_npwm_chy, PALSE_TIMER_CHY_2); /* 配置TIMx通道y */
+
+    HAL_NVIC_SetPriority(PALSE_TIMER_IRQn_2, 1, 3); /* 设置中断优先级，抢占优先级1，子优先级3 */
+    HAL_NVIC_EnableIRQ(PALSE_TIMER_IRQn_2);         /* 开启ITMx中断 */
+    __HAL_TIM_ENABLE_IT(&palse_timer_chy_handle_2, TIM_IT_UPDATE); /* 允许更新中断 */
+    HAL_TIM_PWM_Start(&palse_timer_chy_handle_2, PALSE_TIMER_CHY_2); /* 开启对应PWM通道 */
+}
+
 /**
  * @brief       高级定时器TIMX NPWM设置PWM个数
  * @param       rcr: PWM的个数, 1~2^32次方个
@@ -70,6 +116,23 @@ void palse_times_set(uint32_t npwm)
     HAL_TIM_GenerateEvent(&palse_timer_chy_handle, TIM_EVENTSOURCE_UPDATE); /* 产生一次更新事件,在中断里面处理脉冲输出 */
     __HAL_TIM_ENABLE(&palse_timer_chy_handle);                              /* 使能定时器TIMX */
 }
+
+
+/**
+ * @brief       第二个定时器的脉冲设置
+ * @param       rcr: PWM的个数, 1~2^32次方个
+ * @retval      无
+ */
+void palse_times_set_2(uint32_t npwm)
+{
+    if (npwm == 0)
+        return;
+    HAL_TIM_PWM_Start(&palse_timer_chy_handle_2,PALSE_TIMER_CHY_2);
+    g_npwm_remain_2 = npwm;                                                   /* 保存脉冲个数 */
+    HAL_TIM_GenerateEvent(&palse_timer_chy_handle_2, TIM_EVENTSOURCE_UPDATE); /* 产生一次更新事件,在中断里面处理脉冲输出 */
+    __HAL_TIM_ENABLE(&palse_timer_chy_handle_2);                              /* 使能定时器TIMX */
+}
+
 
 /**
  * @attention 在1Mhz情况下才能使用
@@ -90,10 +153,34 @@ void palse_period_set_us(uint32_t period_time_us)
     
 }
 
+/**
+ * @attention 在1Mhz情况下才能使用
+ */
+
+ void palse_period_set_us_2(uint32_t period_time_us)
+ {   
+     if (period_time_us <= 0 )
+     {
+         return;
+     }
+     else
+     {
+         __HAL_TIM_SET_AUTORELOAD(&palse_timer_chy_handle_2, period_time_us-1);
+         HAL_TIM_GenerateEvent(&palse_timer_chy_handle_2,TIM_EVENTSOURCE_UPDATE);
+         __HAL_TIM_ENABLE(&palse_timer_chy_handle_2);
+     }
+     
+ }
+
 
 void palse_stop(void)
 {
     HAL_TIM_PWM_Stop(&palse_timer_chy_handle,PALSE_TIMER_CHY);
+}
+
+void palse_stop_2(void)
+{
+    HAL_TIM_PWM_Stop(&palse_timer_chy_handle_2,PALSE_TIMER_CHY_2);
 }
 
 
@@ -133,5 +220,34 @@ void PALSE_TIMER_IRQHandler(void)
 
         __HAL_TIM_CLEAR_IT(&palse_timer_chy_handle, TIM_IT_UPDATE); /* 清除定时器溢出中断标志位 */
     }
+
+    if (__HAL_TIM_GET_FLAG(&palse_timer_chy_handle_2, TIM_FLAG_UPDATE) != RESET)
+    {
+        if (g_npwm_remain_2 >= 256) /* 还有大于256个脉冲需要发送 */
+        {
+            g_npwm_remain_2 = g_npwm_remain_2 - 256;
+            npwm = 256;
+        }
+        else if (g_npwm_remain_2 % 256) /* 还有位数（不到256）个脉冲要发送 */
+        {
+            npwm = g_npwm_remain_2 % 256;
+            g_npwm_remain_2 = 0; /* 没有脉冲了 */
+        }
+
+        if (npwm) /* 有脉冲要发送 */
+        {
+            PALSE_TIMER->RCR = npwm - 1;                                            /* 设置重复计数寄存器值为npwm-1, 即npwm个脉冲 */
+            HAL_TIM_GenerateEvent(&palse_timer_chy_handle_2, TIM_EVENTSOURCE_UPDATE); /* 产生一次更新事件,在中断里面处理脉冲输出 */
+            __HAL_TIM_ENABLE(&palse_timer_chy_handle_2);                              /* 使能定时器TIMX */
+        }
+        else
+        {
+            PALSE_TIMER->CR1 &= ~(1 << 0); /* 关闭定时器TIMX，使用HAL Disable会清除PWM通道信息，此处不用 */
+        }
+
+        __HAL_TIM_CLEAR_IT(&palse_timer_chy_handle_2, TIM_IT_UPDATE); /* 清除定时器溢出中断标志位 */
+    }
+
+
 }
 

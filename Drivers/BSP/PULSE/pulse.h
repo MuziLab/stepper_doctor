@@ -17,7 +17,6 @@
  #define PALSE_OUT_GPIO_PORT                     GPIOC
  #define PALSE_OUT_GPIO_PIN                      GPIO_PIN_6
  #define PALSE_GPIO_CLK_ENABLE()                 do{  __HAL_RCC_GPIOC_CLK_ENABLE(); }while(0)   /* 配置gpio口的宏*/
- 
  #define PALSE_TIMER                          TIM8
  #define PALSE_TIMER_IRQn                     TIM8_UP_IRQn
  #define PALSE_TIMER_IRQHandler               TIM8_UP_IRQHandler
@@ -25,10 +24,21 @@
  #define PALSE_TIMER_CHY_CCRX                 TIM8->CCR1                             /* 通道Y的输出比较寄存器,不同通道有对应寄存器 */
  #define PALSE_TIMER_CHY_CLK_ENABLE()         do{ __HAL_RCC_TIM8_CLK_ENABLE(); }while(0)  /* TIM8 时钟使能 */
 
+ #define PALSE_OUT_GPIO_PORT_2                     GPIOA
+ #define PALSE_OUT_GPIO_PIN_2                      GPIO_PIN_0
+ #define PALSE_GPIO_CLK_ENABLE_2()                 do{  __HAL_RCC_GPIOA_CLK_ENABLE(); }while(0)   /* 配置gpio口的宏*/
+ #define PALSE_TIMER_2                          TIM2
+ #define PALSE_TIMER_IRQn_2                     TIM2_IRQn
+ #define PALSE_TIMER_IRQHandler_2               TIM2_UP_IRQHandler
+ #define PALSE_TIMER_CHY_2                      TIM_CHANNEL_1                           /* 通道Y */
+ #define PALSE_TIMER_CHY_CCRX_2                 TIM2->CCR1                             /* 通道Y的输出比较寄存器,不同通道有对应寄存器 */
+ #define PALSE_TIMER_CHY_CLK_ENABLE_2()         do{ __HAL_RCC_TIM2_CLK_ENABLE(); }while(0)  /* TIM8 时钟使能 */
+
+ 
 
  #define STEPPER_A_ROUND              200
- #define SBBDIVISION                  32
- #define PALSE_TIMES_ONE_ROUND         (200*32)
+ #define SBBDIVISION                  8
+ #define PALSE_TIMES_ONE_ROUND         (200*8)
  #define PALSE_TIMES_ONE_MM             (PALSE_TIMES_ONE_ROUND/72)
  /******************************************************************************************/
  
@@ -36,5 +46,8 @@
  void palse_times_set(uint32_t npwm);                 /* 高级定时器 设置输出PWM的个数 */
  void palse_period_set_us(uint32_t period_time_us);
  void palse_stop(void);
- 
 
+ void palse_init_2(uint16_t arr, uint16_t psc);
+ void palse_times_set_2(uint32_t npwm);
+ void palse_period_set_us_2(uint32_t period_time_us);
+ void palse_stop_2(void);

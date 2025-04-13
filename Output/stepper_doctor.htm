@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\..\Output\stepper_doctor.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\..\Output\stepper_doctor.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Apr 10 16:42:03 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Sun Apr 13 17:20:51 2025
 <BR><P>
 <H3>Maximum Stack Usage =        168 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -103,8 +103,8 @@ Function Pointers
 Global Symbols
 </H3>
 <P><STRONG><a name="[4c]"></a>__main</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, __main.o(!!!main))
-<BR><BR>[Calls]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
-<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry
+<BR><BR>[Calls]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry
+<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
 </UL>
 
 <P><STRONG><a name="[4d]"></a>__scatterload</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __scatter.o(!!!scatter))
@@ -194,8 +194,8 @@ Global Symbols
 <P><STRONG><a name="[bc]"></a>__rt_lib_shutdown_user_alloc_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$0000000E))
 
 <P><STRONG><a name="[4e]"></a>__rt_entry</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry.o(.ARM.Collect$$rtentry$$00000000))
-<BR><BR>[Called By]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload_rt2
-<LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
+<BR><BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
+<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload_rt2
 </UL>
 
 <P><STRONG><a name="[bd]"></a>__rt_entry_presh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000002))
@@ -214,7 +214,7 @@ Global Symbols
 <P><STRONG><a name="[be]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[55]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 168 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 160 + Unknown Stack Size
 <LI>Call Chain = __rt_entry_main &rArr; main &rArr; sys_stm32_clock_init &rArr; HAL_RCC_ClockConfig &rArr; HAL_InitTick &rArr; HAL_NVIC_SetPriority &rArr; __NVIC_SetPriority
 </UL>
 <BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -638,6 +638,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_CCxChannelCmd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;palse_init
+<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;palse_times_set
 </UL>
 
 <P><STRONG><a name="[79]"></a>HAL_TIM_PWM_Stop</STRONG> (Thumb, 126 bytes, Stack size 12 bytes, stm32f1xx_hal_tim.o(i.HAL_TIM_PWM_Stop))
@@ -745,7 +746,7 @@ Global Symbols
 <P><STRONG><a name="[49]"></a>SystemInit</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, system_stm32f1xx.o(i.SystemInit))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(.text)
 </UL>
-<P><STRONG><a name="[39]"></a>TIM8_UP_IRQHandler</STRONG> (Thumb, 120 bytes, Stack size 8 bytes, pulse.o(i.TIM8_UP_IRQHandler))
+<P><STRONG><a name="[39]"></a>TIM8_UP_IRQHandler</STRONG> (Thumb, 234 bytes, Stack size 8 bytes, pulse.o(i.TIM8_UP_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = TIM8_UP_IRQHandler
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_GenerateEvent
@@ -823,8 +824,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tmc2209_full_write
 </UL>
 
-<P><STRONG><a name="[56]"></a>main</STRONG> (Thumb, 94 bytes, Stack size 16 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = main &rArr; sys_stm32_clock_init &rArr; HAL_RCC_ClockConfig &rArr; HAL_InitTick &rArr; HAL_NVIC_SetPriority &rArr; __NVIC_SetPriority
+<P><STRONG><a name="[56]"></a>main</STRONG> (Thumb, 88 bytes, Stack size 8 bytes, main.o(i.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = main &rArr; sys_stm32_clock_init &rArr; HAL_RCC_ClockConfig &rArr; HAL_InitTick &rArr; HAL_NVIC_SetPriority &rArr; __NVIC_SetPriority
 </UL>
 <BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_transmit
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_init
@@ -873,10 +874,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_reaction
 </UL>
 
-<P><STRONG><a name="[99]"></a>palse_times_set</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, pulse.o(i.palse_times_set))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = palse_times_set
+<P><STRONG><a name="[99]"></a>palse_times_set</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, pulse.o(i.palse_times_set))
+<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = palse_times_set &rArr; HAL_TIM_PWM_Start &rArr; TIM_CCxChannelCmd
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_GenerateEvent
+<BR>[Calls]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PWM_Start
+<LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_GenerateEvent
 </UL>
 <BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_reaction
 </UL>
@@ -909,7 +911,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[87]"></a>uart_reaction</STRONG> (Thumb, 208 bytes, Stack size 8 bytes, uart.o(i.uart_reaction))
+<P><STRONG><a name="[87]"></a>uart_reaction</STRONG> (Thumb, 204 bytes, Stack size 8 bytes, uart.o(i.uart_reaction))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = uart_reaction &rArr; tmc2209_full_write &rArr; full_duplex_uart_transmit &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tmc2209_full_write

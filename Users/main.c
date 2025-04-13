@@ -17,11 +17,11 @@ int main(void)
     delay_init(72);                     /* 延时初始化 */
 		palse_init(5000 - 1, 72 - 1); /*计算方法，前一个参数是重装值，决定计数次数（周期），后一个是分频器，决定计数的时间*/
     full_duplex_uart_init(115200);
-    //half_duplex_uart_init(115200);
     uart_init(115200);
-
+    //palse_init_2(5000 - 1, 72 - 1);
+    
     uint8_t hello_message[2] = {'a', 'b'};
-    uint8_t bye_message[2] = {'5', '5'};
+//    uint8_t bye_message[2] = {'5', '5'};
     uart_transmit(hello_message,2,1000);
 
 
@@ -37,6 +37,12 @@ int main(void)
         // tmc2209_full_write(0,0,dir_right_data);
         // palse_times_set(250);
         // delay_ms(3000);
+
+
+        //palse_period_set_us_2(10000);
+        //palse_times_set_2(250);
+        //palse_period_set_us(10000);
+        //palse_times_set(250);
         uart_transmit(hello_message,2,1000);
         delay_ms(2000);
         
