@@ -24,10 +24,17 @@
  #define PALSE_TIMER_CHY                      TIM_CHANNEL_1                           /* 通道Y */
  #define PALSE_TIMER_CHY_CCRX                 TIM8->CCR1                             /* 通道Y的输出比较寄存器,不同通道有对应寄存器 */
  #define PALSE_TIMER_CHY_CLK_ENABLE()         do{ __HAL_RCC_TIM8_CLK_ENABLE(); }while(0)  /* TIM8 时钟使能 */
- 
+
+
+ #define STEPPER_A_ROUND              200
+ #define SBBDIVISION                  32
+ #define PALSE_TIMES_ONE_ROUND         (200*32)
+ #define PALSE_TIMES_ONE_MM             (PALSE_TIMES_ONE_ROUND/72)
  /******************************************************************************************/
  
  void palse_init(uint16_t arr, uint16_t psc);   /* 高级定时器 输出指定个数PWM初始化函数 */
- void palse_set(uint32_t npwm);                 /* 高级定时器 设置输出PWM的个数 */
+ void palse_times_set(uint32_t npwm);                 /* 高级定时器 设置输出PWM的个数 */
+ void palse_period_set_us(uint32_t period_time_us);
+ void palse_stop(void);
  
 

@@ -59,3 +59,5 @@
 ..\..\output\uart.o: ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pcd_ex.h
 ..\..\output\uart.o: ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_hcd.h
 ..\..\output\uart.o: ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_mmc.h
+..\..\output\uart.o: ..\..\Drivers\./BSP/PULSE/pulse.h
+..\..\output\uart.o: ..\..\Drivers\./BSP/TMC2209/tmc2209.h

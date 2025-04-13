@@ -1,29 +1,5 @@
-/**
- ****************************************************************************************************
- * @file        atim.c
- * @author      正点原子团队(ALIENTEK)
- * @version     V1.0
- * @date        2020-04-21
- * @brief       高级定时器 驱动代码
- * @license     Copyright (c) 2020-2032, 广州市星翼电子科技有限公司
- ****************************************************************************************************
- * @attention
- *
- * 实验平台:正点原子 STM32F103开发板
- * 在线视频:www.yuanzige.com
- * 技术论坛:www.openedv.com
- * 公司网址:www.alientek.com
- * 购买地址:openedv.taobao.com
- *
- * 修改说明
- * V1.0 20211217
- * 第一次发布
- *
- ****************************************************************************************************
- */
 
 #include "./BSP/PULSE/pulse.h"
-
 TIM_HandleTypeDef palse_timer_chy_handle; /* 定时器x句柄 */
 
 /* g_npwm_remain表示当前还剩下多少个脉冲要发送
@@ -85,15 +61,41 @@ void palse_init(uint16_t arr, uint16_t psc)
  * @param       rcr: PWM的个数, 1~2^32次方个
  * @retval      无
  */
-void palse_set(uint32_t npwm)
+void palse_times_set(uint32_t npwm)
 {
     if (npwm == 0)
         return;
-
+    HAL_TIM_PWM_Start(&palse_timer_chy_handle,PALSE_TIMER_CHY);
     g_npwm_remain = npwm;                                                   /* 保存脉冲个数 */
     HAL_TIM_GenerateEvent(&palse_timer_chy_handle, TIM_EVENTSOURCE_UPDATE); /* 产生一次更新事件,在中断里面处理脉冲输出 */
     __HAL_TIM_ENABLE(&palse_timer_chy_handle);                              /* 使能定时器TIMX */
 }
+
+/**
+ * @attention 在1Mhz情况下才能使用
+ */
+
+void palse_period_set_us(uint32_t period_time_us)
+{   
+    if (period_time_us <= 0 )
+    {
+        return;
+    }
+    else
+    {
+        __HAL_TIM_SET_AUTORELOAD(&palse_timer_chy_handle, period_time_us-1);
+        HAL_TIM_GenerateEvent(&palse_timer_chy_handle,TIM_EVENTSOURCE_UPDATE);
+        __HAL_TIM_ENABLE(&palse_timer_chy_handle);
+    }
+    
+}
+
+
+void palse_stop(void)
+{
+    HAL_TIM_PWM_Stop(&palse_timer_chy_handle,PALSE_TIMER_CHY);
+}
+
 
 /**
  * @brief       高级定时器TIMX NPWM中断服务函数
@@ -132,3 +134,4 @@ void PALSE_TIMER_IRQHandler(void)
         __HAL_TIM_CLEAR_IT(&palse_timer_chy_handle, TIM_IT_UPDATE); /* 清除定时器溢出中断标志位 */
     }
 }
+

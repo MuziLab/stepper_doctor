@@ -1,4 +1,7 @@
 #include "./BSP/UART/uart.h"
+#include "./BSP/PULSE/pulse.h"
+#include "./BSP/TMC2209/tmc2209.h"
+
 
 static uint8_t usb_uart_rx_buffer[BUFFER_SIZE_FOR_USART1] = {0};
 static uint8_t uart4_rx_buffer[BUFFER_SIZE_FOR_UART4] = {0};
@@ -150,6 +153,51 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
         HAL_NVIC_SetPriority(FULL_DUPLEX_USART_UX_IRQn, 3, 3); // 组2，最低优先级:抢占优先级3，子优先级3 *
     }
 }
+/**
+ * @brief 处理来自电脑的通信函数
+ * 
+ */
+void uart_reaction(void)
+{
+    switch (usb_uart_rx_buffer[0])
+    {
+    case 0x10://左转1cm，慢转
+        tmc2209_full_write(0,0,dir_left_data); 
+        palse_period_set_us(10000);
+        palse_times_set(PALSE_TIMES_ONE_MM*10);
+        break;
+    case 0x01://右转1cm，慢转
+        tmc2209_full_write(0,0,dir_right_data);
+        palse_period_set_us(10000);
+        palse_times_set(PALSE_TIMES_ONE_MM*10);    
+        break;
+    case 0x00://停止
+        palse_stop();
+        break;
+    case 0x02://高速左转动
+        tmc2209_full_write(0,0,dir_left_data); 
+        palse_period_set_us(10000);
+        palse_times_set(100);
+        palse_period_set_us(5000);
+        palse_times_set(100);
+        palse_period_set_us(2500);
+        palse_times_set(PALSE_TIMES_ONE_MM*50);
+        break;
+    case 0x03://高速右转动
+        tmc2209_full_write(0,0,dir_right_data); 
+        palse_period_set_us(10000);
+        palse_times_set(100);
+        palse_period_set_us(5000);
+        palse_times_set(100);
+        palse_period_set_us(2500);
+        palse_times_set(PALSE_TIMES_ONE_MM*50);  
+        break;
+    default:
+        break;
+    }
+    
+}
+
 
 /**
  * @brief       中断回调函数
@@ -159,7 +207,8 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *handle)
 {
     if (handle->Instance == USART_UX)
-    {
+    {   
+        uart_reaction();
         HAL_UART_Transmit(handle, usb_uart_rx_buffer, BUFFER_SIZE_FOR_USART1, 1000);
         HAL_UART_Receive_IT(handle, usb_uart_rx_buffer, BUFFER_SIZE_FOR_USART1); // this function is necessary when processing data accomplished.
     }
@@ -181,9 +230,13 @@ void USART_UX_IRQHandler(void)
 }
 
 HAL_StatusTypeDef uart_transmit(uint8_t *pData, uint16_t Size, uint32_t Timeout)
-{
+{   
+
     return HAL_UART_Transmit(&handle_for_uart, pData, Size, Timeout);
+
 }
+
+
 
 // 全双工
 

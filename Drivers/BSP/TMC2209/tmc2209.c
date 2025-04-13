@@ -1,6 +1,8 @@
 #include "./BSP/TMC2209/tmc2209.h"
 #include "./BSP/UART/uart.h"
 
+uint8_t dir_right_data[4] = {0x00,0x00,0x00,0x09};
+uint8_t dir_left_data[4] = {0x00,0x00,0x00,0x01};
 
 void official_tmc_CRC(uint8_t *datagram, uint8_t datagramLength)
 {
@@ -37,15 +39,22 @@ void official_tmc_CRC(uint8_t *datagram, uint8_t datagramLength)
 void tmc2209_full_read(uint8_t tmc_addr, uint8_t register_addr, uint8_t *rx_buff)
 {
     uint8_t tx[4] = {0};
-    tx[0] = 0x05;          // 读命令
+    tx[0] = 0x05;          
     tx[1] = tmc_addr;      // 芯片地址
-    tx[2] = register_addr; // GCONF 寄存器地址
+    tx[2] = register_addr; 
     official_tmc_CRC(tx, 4);
     full_duplex_uart_transmit(tx, 4, 100);
 
     // 等待驱动返回：8字节数据包（写命令 + 数据 + CRC）
     uint8_t rx[8];
-    full_duplex_uart_receive(rx, 8, 100);
+    
+    if (full_duplex_uart_receive(rx, 8, 1000)!= HAL_OK)
+    {   
+        uint8_t err_message[3] = {'e', 'r','r'};
+        uart_transmit(err_message,3,100);
+    }
+    
+    ;
 
     // 提取数据（4字节）
     for (size_t i = 0; i < 4; i++)
@@ -54,11 +63,16 @@ void tmc2209_full_read(uint8_t tmc_addr, uint8_t register_addr, uint8_t *rx_buff
     }
 }
 
-// 全双工实现单工写
+/**
+ * @brief 全双工实现单工写
+ * @attention 高位在前
+ *   */ 
+
 void tmc2209_full_write(uint8_t tmc_addr, uint8_t register_addr, uint8_t *tx_data)
 {
+
     uint8_t buffer[8];
-    buffer[0] = 0x05;       // 写命令
+    buffer[0] = 0x05;       
     buffer[1] = 0x00;       // 芯片地址（默认）
     buffer[2] = register_addr|0x80;       // IHOLD_IRUN 寄存器地址
     buffer[3] = tx_data[0]; // IHOLD
@@ -66,7 +80,5 @@ void tmc2209_full_write(uint8_t tmc_addr, uint8_t register_addr, uint8_t *tx_dat
     buffer[5] = tx_data[2];
     buffer[6] = tx_data[3];
     official_tmc_CRC(buffer,8);
-    
-
     full_duplex_uart_transmit(buffer, 8, 100);
 }
