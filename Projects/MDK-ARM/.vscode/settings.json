@@ -6,6 +6,8 @@
         "half_duplex_uart.h": "c",
         "uart.h": "c",
         "tmc2209.h": "c",
-        "sys.h": "c"
+        "sys.h": "c",
+        "gpio.h": "c",
+        "main.h": "c"
     }
 }

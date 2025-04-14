@@ -513,6 +513,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\Drivers\BSP\TMC2209\tmc2209.c</FilePath>
             </File>
+            <File>
+              <FileName>gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Drivers\BSP\GPIO\gpio.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

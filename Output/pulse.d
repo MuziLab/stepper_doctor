@@ -1,5 +1,6 @@
 ..\..\output\pulse.o: ..\..\Drivers\BSP\PULSE\pulse.c
 ..\..\output\pulse.o: ..\..\Drivers\./BSP/PULSE/pulse.h
+..\..\output\pulse.o: ..\..\Users\./main.h
 ..\..\output\pulse.o: ..\..\Drivers\./SYSTEM/sys/sys.h
 ..\..\output\pulse.o: ..\..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h
 ..\..\output\pulse.o: ..\..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xe.h

@@ -58,3 +58,4 @@
 ..\..\output\delay.o: ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_hcd.h
 ..\..\output\delay.o: ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_mmc.h
 ..\..\output\delay.o: ..\..\Drivers\./SYSTEM/delay/delay.h
+..\..\output\delay.o: ..\..\Users\./main.h

@@ -1,4 +1,6 @@
 ..\..\output\main.o: ..\..\Users\main.c
+..\..\output\main.o: ..\..\Drivers\./SYSTEM/delay/delay.h
+..\..\output\main.o: ..\..\Users\./main.h
 ..\..\output\main.o: ..\..\Drivers\./SYSTEM/sys/sys.h
 ..\..\output\main.o: ..\..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h
 ..\..\output\main.o: ..\..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xe.h
@@ -57,7 +59,6 @@
 ..\..\output\main.o: ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pcd_ex.h
 ..\..\output\main.o: ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_hcd.h
 ..\..\output\main.o: ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_mmc.h
-..\..\output\main.o: ..\..\Drivers\./SYSTEM/delay/delay.h
 ..\..\output\main.o: ..\..\Drivers\./BSP/PULSE/pulse.h
 ..\..\output\main.o: ..\..\Drivers\./BSP/UART/uart.h
 ..\..\output\main.o: C:\MDK5.36\ARM\ARMCC\Bin\..\include\stdio.h
