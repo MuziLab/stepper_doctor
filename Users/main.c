@@ -14,7 +14,7 @@ int main(void)
 
     HAL_Init();                         /* 初始化HAL库 */
     SystemClock_Config();               /* cube生成的时钟函数*/
-
+		delay_init(72);
 	palse_init(5000 - 1, 72 - 1); /*计算方法，前一个参数是重装值，决定计数次数（周期），后一个是分频器，决定计数的时间*/
     //full_duplex_uart_init(115200);
   uart_init(115200);
@@ -43,9 +43,9 @@ int main(void)
         //palse_times_set_2(250);
       //  palse_period_set_us(10000);
       //  palse_times_set(250);
-     uart_transmit(hello_message,2,1000);
+        uart_transmit(hello_message,2,1000);
 
-        HAL_Delay(5000);
+        delay_ms(3000);
         
     }
 }
