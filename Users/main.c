@@ -13,14 +13,18 @@ int main(void)
 {
 
   HAL_Init();                         /* 初始化HAL库 */
+  __HAL_RCC_AFIO_CLK_ENABLE();
+  __HAL_RCC_PWR_CLK_ENABLE();
+  __HAL_AFIO_REMAP_SWJ_NOJTAG();
   SystemClock_Config();               /* cube生成的时钟函数*/
  // sys_stm32_clock_init(RCC_PLL_MUL9); 
 	delay_init(72);
-	palse_init(5000 - 1, 72 - 1); /*计算方法，前一个参数是重装值，决定计数次数（周期），后一个是分频器，决定计数的时间*/
-  palse_init_2(5000-1,71);
+
+	pulse_init(5000 - 1, 72 - 1); /*计算方法，前一个参数是重装值，决定计数次数（周期），后一个是分频器，决定计数的时间*/
+  pulse_init_2(5000-1,71);
     //full_duplex_uart_init(115200);
   //uart_init(115200);
-    //palse_init_2(5000 - 1, 72 - 1);
+    //pulse_init_2(5000 - 1, 72 - 1);
     
 //    uint8_t hello_message[2] = {'a', 'b'};
 //    uint8_t bye_message[2] = {'5', '5'};
@@ -32,21 +36,21 @@ int main(void)
         //tmc2209_full_write(0,0x10,heightest_current);
         //tmc2209_full_read(0,0, rx_buff);
         // tmc2209_full_write(0,0,dir_left_data);
-        // palse_period_set_us(10000);
-        // palse_times_set(250);
+        // pulse_period_set_us(10000);
+        // pulse_times_set(250);
         // delay_ms(3000);
-        // palse_period_set_us(3000);
+        // pulse_period_set_us(3000);
         // tmc2209_full_write(0,0,dir_right_data);
-        // palse_times_set(250);
+        // pulse_times_set(250);
         // delay_ms(3000);
 
 
-        //palse_period_set_us_2(10000);
-        //palse_times_set_2(250);
-      //  palse_period_set_us(10000);
-      //  palse_times_set(250);
-        palse_times_set(250);
-        palse_times_set_2(250);
+        //pulse_period_set_us_2(10000);
+        //pulse_times_set_2(250);
+      //  pulse_period_set_us(10000);
+      //  pulse_times_set(250);
+         pulse_times_set(250);
+        pulse_times_set_2(250);
  //       uart_transmit(hello_message,2,1000);
 
         delay_ms(3000);

@@ -163,34 +163,34 @@ void uart_reaction(void)
     {
     case 0x10://左转1cm，慢转
         tmc2209_full_write(0,0,dir_left_data); 
-        palse_period_set_us(10000);
-        palse_times_set(PALSE_TIMES_ONE_MM*10);
+        pulse_period_set_us(10000);
+        pulse_times_set(PULSE_TIMES_ONE_MM*10);
         break;
     case 0x01://右转1cm，慢转
         tmc2209_full_write(0,0,dir_right_data);
-        palse_period_set_us(10000);
-        palse_times_set(PALSE_TIMES_ONE_MM*10);    
+        pulse_period_set_us(10000);
+        pulse_times_set(PULSE_TIMES_ONE_MM*10);    
         break;
     case 0x00://停止
-        palse_stop();
+        pulse_stop();
         break;
     case 0x02://高速左转动
         tmc2209_full_write(0,0,dir_left_data); 
-        palse_period_set_us(10000);
-        palse_times_set(100);
-        palse_period_set_us(5000);
-        palse_times_set(100);
-        palse_period_set_us(2500);
-        palse_times_set(PALSE_TIMES_ONE_MM*50);
+        pulse_period_set_us(10000);
+        pulse_times_set(100);
+        pulse_period_set_us(5000);
+        pulse_times_set(100);
+        pulse_period_set_us(2500);
+        pulse_times_set(PULSE_TIMES_ONE_MM*50);
         break;
     case 0x03://高速右转动
         tmc2209_full_write(0,0,dir_right_data); 
-        palse_period_set_us(10000);
-        palse_times_set(100);
-        palse_period_set_us(5000);
-        palse_times_set(100);
-        palse_period_set_us(2500);
-        palse_times_set(PALSE_TIMES_ONE_MM*50);  
+        pulse_period_set_us(10000);
+        pulse_times_set(100);
+        pulse_period_set_us(5000);
+        pulse_times_set(100);
+        pulse_period_set_us(2500);
+        pulse_times_set(PULSE_TIMES_ONE_MM*50);  
         break;
     default:
         break;
