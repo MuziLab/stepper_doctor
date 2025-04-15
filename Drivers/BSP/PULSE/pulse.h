@@ -36,16 +36,16 @@
  #define PULSE_TIMER_CHY_CLK_ENABLE_2()         do{ __HAL_RCC_TIM8_CLK_ENABLE(); }while(0)  /* TIM 时钟使能 */
  #define PULSE_TIMER_CHY_CLK_DISABLE_2()         do{ __HAL_RCC_TIM8_CLK_DISABLE(); }while(0)
 
- #define PULSE_OUT_GPIO_PORT_3                     GPIOD
- #define PULSE_OUT_GPIO_PIN_3                      GPIO_PIN_12
- #define PULSE_GPIO_CLK_ENABLE_3()                 do{  __HAL_RCC_GPIOD_CLK_ENABLE(); }while(0)   /* 配置gpio口的宏*/
- #define PULSE_TIMER_3                          TIM4
- #define PULSE_TIMER_IRQn_3                     TIM4_IRQn
- #define PULSE_TIMER_IRQHandler_3               TIM4_IRQHandler
+ #define PULSE_OUT_GPIO_PORT_3                     GPIOA
+ #define PULSE_OUT_GPIO_PIN_3                      GPIO_PIN_0
+ #define PULSE_GPIO_CLK_ENABLE_3()                 do{  __HAL_RCC_GPIOA_CLK_ENABLE(); }while(0)   /* 配置gpio口的宏*/
+ #define PULSE_TIMER_3                          TIM2
+ #define PULSE_TIMER_IRQn_3                     TIM2_IRQn
+ #define PULSE_TIMER_IRQHandler_3               TIM2_IRQHandler
  #define PULSE_TIMER_CHY_3                      TIM_CHANNEL_1                           /* 通道Y */
- #define PULSE_TIMER_CHY_CCRX_3                 TIM4->CCR1                             /* 通道Y的输出比较寄存器,不同通道有对应寄存器 */
- #define PULSE_TIMER_CHY_CLK_ENABLE_3()         do{ __HAL_RCC_TIM4_CLK_ENABLE(); }while(0)  /* TIM8 时钟使能 */
- #define PULSE_TIMER_CHY_CLK_DISABLE_3()         do{ __HAL_RCC_TIM4_CLK_DISABLE(); }while(0)
+ #define PULSE_TIMER_CHY_CCRX_3                 TIM2->CCR1                             /* 通道Y的输出比较寄存器,不同通道有对应寄存器 */
+ #define PULSE_TIMER_CHY_CLK_ENABLE_3()         do{ __HAL_RCC_TIM2_CLK_ENABLE(); }while(0)  /* TIM8 时钟使能 */
+ #define PULSE_TIMER_CHY_CLK_DISABLE_3()         do{ __HAL_RCC_TIM2_CLK_DISABLE(); }while(0)
 
  
 
@@ -67,3 +67,8 @@
  void pulse_times_set_2(uint32_t npwm);
  void pulse_period_set_us_2(uint32_t period_time_us);
  void pulse_stop_2(void);
+
+ void pulse_init_3(uint16_t arr, uint16_t psc);
+ void pulse_times_set_3(uint32_t npwm);
+ void pulse_period_set_us_3(uint32_t period_time_us);
+ void pulse_stop_3(void);

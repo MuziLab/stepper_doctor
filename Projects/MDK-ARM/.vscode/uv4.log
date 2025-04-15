@@ -1,7 +1,10 @@
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\MDK5.36\ARM\ARMCC\Bin'
 Build target 'stepper_doctor'
-compiling uart.c...
+compiling main.c...
+..\..\Drivers\./BSP/PULSE/pulse.h(74): warning:  #1-D: last line of file ends without a newline
+   void pulse_stop_3(void);
+..\..\Users\main.c: 1 warning, 0 errors
 linking...
-Program Size: Code=8748 RO-data=360 RW-data=52 ZI-data=2020  
-"..\..\Output\stepper_doctor.axf" - 0 Error(s), 0 Warning(s).
+Program Size: Code=10028 RO-data=360 RW-data=52 ZI-data=2020  
+"..\..\Output\stepper_doctor.axf" - 0 Error(s), 1 Warning(s).
 Build Time Elapsed:  00:00:01
