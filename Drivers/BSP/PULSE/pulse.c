@@ -158,7 +158,7 @@ void palse_times_set(uint32_t npwm)
     g_npwm_remain = npwm;                                                   /* 保存脉冲个数 */
     HAL_TIM_GenerateEvent(&palse_timer_chy_handle, TIM_EVENTSOURCE_UPDATE); /* 产生一次更新事件,在中断里面处理脉冲输出 */
     __HAL_TIM_ENABLE(&palse_timer_chy_handle);                              /* 使能定时器TIMX */
-    HAL_TIM_PWM_Start(&palse_timer_chy_handle, TIM_CHANNEL_1);
+    HAL_TIM_PWM_Start(&palse_timer_chy_handle, PALSE_TIMER_CHY);
 }
 
 /**
@@ -234,7 +234,7 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *tim_baseHandle)
         PALSE_TIMER_CHY_CLK_ENABLE();
 
         /* TIM1 interrupt Init */
-        HAL_NVIC_SetPriority(PALSE_TIMER_IRQn, 0, 0);
+        HAL_NVIC_SetPriority(PALSE_TIMER_IRQn, 1, 3);
         HAL_NVIC_EnableIRQ(PALSE_TIMER_IRQn);
 
     }
@@ -245,18 +245,17 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *tim_baseHandle)
         PALSE_TIMER_CHY_CLK_ENABLE_2();
 
         /* TIM2 interrupt Init */
-        HAL_NVIC_SetPriority(TIM2_IRQn, 0, 0);
-        HAL_NVIC_EnableIRQ(TIM2_IRQn);
+        HAL_NVIC_SetPriority(PALSE_TIMER_IRQn_2, 1, 3);
+        HAL_NVIC_EnableIRQ(PALSE_TIMER_IRQn_2);
     }
     else if (tim_baseHandle->Instance == PALSE_TIMER_3)
     {
 
         /* TIM3 clock enable */
         PALSE_TIMER_CHY_CLK_ENABLE_3();
-
         /* TIM3 interrupt Init */
-        HAL_NVIC_SetPriority(TIM3_IRQn, 0, 0);
-        HAL_NVIC_EnableIRQ(TIM3_IRQn);
+        HAL_NVIC_SetPriority(PALSE_TIMER_IRQn_3, 1, 3);
+        HAL_NVIC_EnableIRQ(PALSE_TIMER_IRQn_3);
     }
     __HAL_TIM_ENABLE_IT(tim_baseHandle, TIM_IT_UPDATE);  // 启用更新中断
 
@@ -265,7 +264,7 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *tim_baseHandle)
 // 统一进行gpio配置
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *timHandle)
 {
-
+    
     GPIO_InitTypeDef GPIO_InitStruct = {0};
     if (timHandle->Instance == PALSE_TIMER)
     {
@@ -276,7 +275,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *timHandle)
         */
         GPIO_InitStruct.Pin = PALSE_OUT_GPIO_PIN;
         GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
         HAL_GPIO_Init(PALSE_OUT_GPIO_PORT, &GPIO_InitStruct);
 
         // TODO    __HAL_AFIO_REMAP_TIM1_ENABLE();这个应该没必要
@@ -293,8 +292,8 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *timHandle)
         */
         GPIO_InitStruct.Pin = PALSE_OUT_GPIO_PIN_2;
         GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+        HAL_GPIO_Init(PALSE_OUT_GPIO_PORT_2, &GPIO_InitStruct);
 
         /* USER CODE BEGIN TIM2_MspPostInit 1 */
 
@@ -312,12 +311,16 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *timHandle)
         */
         GPIO_InitStruct.Pin = PALSE_OUT_GPIO_PIN_3;
         GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+        HAL_GPIO_Init(PALSE_OUT_GPIO_PORT_3, &GPIO_InitStruct);
 
         /* USER CODE BEGIN TIM3_MspPostInit 1 */
 
         /* USER CODE END TIM3_MspPostInit 1 */
+    }
+    if (timHandle->Instance == TIM1)
+    {
+        __HAL_AFIO_REMAP_TIM1_ENABLE();
     }
 }
 
@@ -376,68 +379,14 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
  */
 void PALSE_TIMER_IRQHandler(void)
 {
-    uint16_t npwm = 0;
 
-    /* 以下代码没有使用定时器HAL库共用处理函数来处理，而是直接通过判断中断标志位的方式 */
-    if (__HAL_TIM_GET_FLAG(&palse_timer_chy_handle, TIM_FLAG_UPDATE) != RESET)
-    {
-        if (g_npwm_remain >= 256) /* 还有大于256个脉冲需要发送 */
-        {
-            g_npwm_remain = g_npwm_remain - 256;
-            npwm = 256;
-        }
-        else if (g_npwm_remain % 256) /* 还有位数（不到256）个脉冲要发送 */
-        {
-            npwm = g_npwm_remain % 256;
-            g_npwm_remain = 0; /* 没有脉冲了 */
-        }
-
-        if (npwm) /* 有脉冲要发送 */
-        {
-            PALSE_TIMER->RCR = npwm - 1;                                            /* 设置重复计数寄存器值为npwm-1, 即npwm个脉冲 */
-            HAL_TIM_GenerateEvent(&palse_timer_chy_handle, TIM_EVENTSOURCE_UPDATE); /* 产生一次更新事件,在中断里面处理脉冲输出 */
-            __HAL_TIM_ENABLE(&palse_timer_chy_handle);                              /* 使能定时器TIMX */
-        }
-        else
-        {
-            PALSE_TIMER->CR1 &= ~(1 << 0); /* 关闭定时器TIMX，使用HAL Disable会清除PWM通道信息，此处不用 */
-        }
-
-        __HAL_TIM_CLEAR_IT(&palse_timer_chy_handle, TIM_IT_UPDATE); /* 清除定时器溢出中断标志位 */
-    }
-
-
+    HAL_TIM_IRQHandler(&palse_timer_chy_handle);
 }
 
 void PALSE_TIMER_IRQHandler_2(void)
 {   
-    uint16_t npwm = 0;
-    if (__HAL_TIM_GET_FLAG(&palse_timer_chy_handle_2, TIM_FLAG_UPDATE) != RESET)
-    {
-        if (g_npwm_remain_2 >= 256) /* 还有大于256个脉冲需要发送 */
-        {
-            g_npwm_remain_2 = g_npwm_remain_2 - 256;
-            npwm = 256;
-        }
-        else if (g_npwm_remain_2 % 256) /* 还有位数（不到256）个脉冲要发送 */
-        {
-            npwm = g_npwm_remain_2 % 256;
-            g_npwm_remain_2 = 0; /* 没有脉冲了 */
-        }
 
-        if (npwm) /* 有脉冲要发送 */
-        {
-            PALSE_TIMER_2->RCR = npwm - 1;                                              /* 设置重复计数寄存器值为npwm-1, 即npwm个脉冲 */
-            HAL_TIM_GenerateEvent(&palse_timer_chy_handle_2, TIM_EVENTSOURCE_UPDATE); /* 产生一次更新事件,在中断里面处理脉冲输出 */
-            __HAL_TIM_ENABLE(&palse_timer_chy_handle_2);                              /* 使能定时器TIMX */
-        }
-        else
-        {
-            PALSE_TIMER_2->CR1 &= ~(1 << 0); /* 关闭定时器TIMX，使用HAL Disable会清除PWM通道信息，此处不用 */
-        }
-
-        __HAL_TIM_CLEAR_IT(&palse_timer_chy_handle_2, TIM_IT_UPDATE); /* 清除定时器溢出中断标志位 */
-    }
+    HAL_TIM_IRQHandler(&palse_timer_chy_handle_2);
 }
 
 void PALSE_TIMER_IRQHandler_3(void)
@@ -469,4 +418,60 @@ void PALSE_TIMER_IRQHandler_3(void)
 
         __HAL_TIM_CLEAR_IT(&palse_timer_chy_handle_3, TIM_IT_UPDATE); /* 清除定时器溢出中断标志位 */
     }
+}
+
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{   
+    uint16_t npwm = 0;
+    if (htim->Instance == PALSE_TIMER_3)
+    {
+        if (g_npwm_remain >= 256) /* 还有大于256个脉冲需要发送 */
+        {
+            g_npwm_remain = g_npwm_remain - 256;
+            npwm = 256;
+        }
+        else if (g_npwm_remain % 256) /* 还有位数（不到256）个脉冲要发送 */
+        {
+            npwm = g_npwm_remain % 256;
+            g_npwm_remain = 0; /* 没有脉冲了 */
+        }
+
+        if (npwm) /* 有脉冲要发送 */
+        {
+            PALSE_TIMER->RCR = npwm - 1;                                              /* 设置重复计数寄存器值为npwm-1, 即npwm个脉冲 */
+            HAL_TIM_GenerateEvent(&palse_timer_chy_handle, TIM_EVENTSOURCE_UPDATE); /* 产生一次更新事件,在中断里面处理脉冲输出 */
+            __HAL_TIM_ENABLE(&palse_timer_chy_handle);                              /* 使能定时器TIMX */
+        }
+        else
+        {
+            PALSE_TIMER->CR1 &= ~(1 << 0); /* 关闭定时器TIMX，使用HAL Disable会清除PWM通道信息，此处不用 */
+        }
+
+    }
+    else if (htim->Instance == PALSE_TIMER_3)
+    {
+        if (g_npwm_remain_2 >= 256) /* 还有大于256个脉冲需要发送 */
+        {
+            g_npwm_remain_2 = g_npwm_remain_2 - 256;
+            npwm = 256;
+        }
+        else if (g_npwm_remain_2 % 256) /* 还有位数（不到256）个脉冲要发送 */
+        {
+            npwm = g_npwm_remain_2 % 256;
+            g_npwm_remain_2 = 0; /* 没有脉冲了 */
+        }
+
+        if (npwm) /* 有脉冲要发送 */
+        {
+            PALSE_TIMER->RCR = npwm - 1;                                              /* 设置重复计数寄存器值为npwm-1, 即npwm个脉冲 */
+            HAL_TIM_GenerateEvent(&palse_timer_chy_handle_2, TIM_EVENTSOURCE_UPDATE); /* 产生一次更新事件,在中断里面处理脉冲输出 */
+            __HAL_TIM_ENABLE(&palse_timer_chy_handle_2);                              /* 使能定时器TIMX */
+        }
+        else
+        {
+            PALSE_TIMER_2->CR1 &= ~(1 << 0); /* 关闭定时器TIMX，使用HAL Disable会清除PWM通道信息，此处不用 */
+        }
+    }
+    
 }

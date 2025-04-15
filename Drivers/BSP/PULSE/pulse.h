@@ -14,27 +14,27 @@
   * 默认使用的是TIM8_CH1.
   * 注意: 通过修改这几个宏定义, 可以支持TIM1/TIM8定时器, 任意一个IO口输出指定个数的PWM
   */
- #define PALSE_OUT_GPIO_PORT                     GPIOA
- #define PALSE_OUT_GPIO_PIN                      GPIO_PIN_0
- #define PALSE_GPIO_CLK_ENABLE()                 do{  __HAL_RCC_GPIOA_CLK_ENABLE(); }while(0)   /* 配置gpio口的宏*/
- #define PALSE_TIMER                          TIM2
- #define PALSE_TIMER_IRQn                     TIM2_IRQn
- #define PALSE_TIMER_IRQHandler               TIM2_IRQHandler
+ #define PALSE_OUT_GPIO_PORT                     GPIOC
+ #define PALSE_OUT_GPIO_PIN                      GPIO_PIN_6
+ #define PALSE_GPIO_CLK_ENABLE()                 do{  __HAL_RCC_GPIOC_CLK_ENABLE(); }while(0)   /* 配置gpio口的宏*/
+ #define PALSE_TIMER                          TIM8
+ #define PALSE_TIMER_IRQn                     TIM8_UP_IRQn
+ #define PALSE_TIMER_IRQHandler               TIM8_UP_IRQHandler
  #define PALSE_TIMER_CHY                      TIM_CHANNEL_1                           /* 通道 */
- #define PALSE_TIMER_CHY_CCRX                 TIM2->CCR1                            //这个好像没用
- #define PALSE_TIMER_CHY_CLK_ENABLE()         do{ __HAL_RCC_TIM2_CLK_ENABLE(); }while(0)  /* TIM时钟使能 */
- #define PALSE_TIMER_CHY_CLK_DISABLE()         do{ __HAL_RCC_TIM2_CLK_DISABLE(); }while(0)  /* TIM 时钟失能 */
+ #define PALSE_TIMER_CHY_CCRX                 TIM8->CCR1                            //这个好像没用
+ #define PALSE_TIMER_CHY_CLK_ENABLE()         do{ __HAL_RCC_TIM8_CLK_ENABLE(); }while(0)  /* TIM时钟使能 */
+ #define PALSE_TIMER_CHY_CLK_DISABLE()         do{ __HAL_RCC_TIM8_CLK_DISABLE(); }while(0)  /* TIM 时钟失能 */
 
- #define PALSE_OUT_GPIO_PORT_2                     GPIOA
- #define PALSE_OUT_GPIO_PIN_2                      GPIO_PIN_6
- #define PALSE_GPIO_CLK_ENABLE_2()                 do{  __HAL_RCC_GPIOA_CLK_ENABLE(); }while(0)   /* 配置gpio口的宏*/
- #define PALSE_TIMER_2                          TIM3
- #define PALSE_TIMER_IRQn_2                     TIM3_IRQn
- #define PALSE_TIMER_IRQHandler_2               TIM3_IRQHandler
+ #define PALSE_OUT_GPIO_PORT_2                     GPIOE
+ #define PALSE_OUT_GPIO_PIN_2                      GPIO_PIN_9
+ #define PALSE_GPIO_CLK_ENABLE_2()                 do{  __HAL_RCC_GPIOE_CLK_ENABLE(); }while(0)   /* 配置gpio口的宏*/
+ #define PALSE_TIMER_2                          TIM1
+ #define PALSE_TIMER_IRQn_2                     TIM1_UP_IRQn
+ #define PALSE_TIMER_IRQHandler_2               TIM1_UP_IRQHandler
  #define PALSE_TIMER_CHY_2                      TIM_CHANNEL_1                           /* 通道Y */
- #define PALSE_TIMER_CHY_CCRX_2                 TIM3->CCR1                            
- #define PALSE_TIMER_CHY_CLK_ENABLE_2()         do{ __HAL_RCC_TIM3_CLK_ENABLE(); }while(0)  /* TIM 时钟使能 */
- #define PALSE_TIMER_CHY_CLK_DISABLE_2()         do{ __HAL_RCC_TIM3_CLK_DISABLE(); }while(0)
+ #define PALSE_TIMER_CHY_CCRX_2                 TIM1->CCR1                            
+ #define PALSE_TIMER_CHY_CLK_ENABLE_2()         do{ __HAL_RCC_TIM1_CLK_ENABLE(); }while(0)  /* TIM 时钟使能 */
+ #define PALSE_TIMER_CHY_CLK_DISABLE_2()         do{ __HAL_RCC_TIM1_CLK_DISABLE(); }while(0)
 
  #define PALSE_OUT_GPIO_PORT_3                     GPIOD
  #define PALSE_OUT_GPIO_PIN_3                      GPIO_PIN_12

@@ -12,19 +12,21 @@ uint8_t heightest_current[4] = {0x00,0x0f,0xff,0xff};//电流数据，寄存器是0x10
 int main(void)
 {
 
-    HAL_Init();                         /* 初始化HAL库 */
-    SystemClock_Config();               /* cube生成的时钟函数*/
-		delay_init(72);
+  HAL_Init();                         /* 初始化HAL库 */
+  SystemClock_Config();               /* cube生成的时钟函数*/
+ // sys_stm32_clock_init(RCC_PLL_MUL9); 
+	delay_init(72);
 	palse_init(5000 - 1, 72 - 1); /*计算方法，前一个参数是重装值，决定计数次数（周期），后一个是分频器，决定计数的时间*/
+  palse_init_2(5000-1,71);
     //full_duplex_uart_init(115200);
-  uart_init(115200);
+  //uart_init(115200);
     //palse_init_2(5000 - 1, 72 - 1);
     
-    uint8_t hello_message[2] = {'a', 'b'};
+//    uint8_t hello_message[2] = {'a', 'b'};
 //    uint8_t bye_message[2] = {'5', '5'};
    // uart_transmit(hello_message,2,1000);
     				
-
+    
     while (1)
     {   
         //tmc2209_full_write(0,0x10,heightest_current);
@@ -43,7 +45,8 @@ int main(void)
         //palse_times_set_2(250);
       //  palse_period_set_us(10000);
       //  palse_times_set(250);
-      palse_times_set(2500);
+        palse_times_set(250);
+        palse_times_set_2(250);
  //       uart_transmit(hello_message,2,1000);
 
         delay_ms(3000);
@@ -52,44 +55,40 @@ int main(void)
 }
  
 
-/**
-  * @brief System Clock Configuration
-  * @retval None
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
   */
- void SystemClock_Config(void)
- {
-   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
- 
-   /** Initializes the RCC Oscillators according to the specified parameters
-   * in the RCC_OscInitTypeDef structure.
-   */
-   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-   RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
-   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
-   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-   {
-     Error_Handler();
-   }
- 
-   /** Initializes the CPU, AHB and APB buses clocks
-   */
-   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
- 
-   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
-   {
-     Error_Handler();
-   }
- }
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
 
 
  /**
