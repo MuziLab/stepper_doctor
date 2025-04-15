@@ -152,12 +152,13 @@ void palse_init_2(uint16_t arr, uint16_t psc)
  */
 void palse_times_set(uint32_t npwm)
 {   
-    HAL_TIM_PWM_Start(&palse_timer_chy_handle, TIM_CHANNEL_1);
+
     if (npwm == 0)
         return;
     g_npwm_remain = npwm;                                                   /* 保存脉冲个数 */
     HAL_TIM_GenerateEvent(&palse_timer_chy_handle, TIM_EVENTSOURCE_UPDATE); /* 产生一次更新事件,在中断里面处理脉冲输出 */
     __HAL_TIM_ENABLE(&palse_timer_chy_handle);                              /* 使能定时器TIMX */
+    HAL_TIM_PWM_Start(&palse_timer_chy_handle, TIM_CHANNEL_1);
 }
 
 /**
@@ -234,6 +235,7 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *tim_baseHandle)
         /* TIM1 interrupt Init */
         HAL_NVIC_SetPriority(PALSE_TIMER_IRQn, 0, 0);
         HAL_NVIC_EnableIRQ(PALSE_TIMER_IRQn);
+
     }
     else if (tim_baseHandle->Instance == PALSE_TIMER_2)
     {
@@ -255,6 +257,8 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *tim_baseHandle)
         HAL_NVIC_SetPriority(TIM3_IRQn, 0, 0);
         HAL_NVIC_EnableIRQ(TIM3_IRQn);
     }
+    __HAL_TIM_ENABLE_IT(tim_baseHandle, TIM_IT_UPDATE);  // 启用更新中断
+
 }
 
 // 统一进行gpio配置

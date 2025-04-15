@@ -23,7 +23,7 @@ int main(void)
     uint8_t hello_message[2] = {'a', 'b'};
 //    uint8_t bye_message[2] = {'5', '5'};
    // uart_transmit(hello_message,2,1000);
-    				palse_times_set(250);
+    				
 
     while (1)
     {   
@@ -43,7 +43,8 @@ int main(void)
         //palse_times_set_2(250);
       //  palse_period_set_us(10000);
       //  palse_times_set(250);
-        uart_transmit(hello_message,2,1000);
+      palse_times_set(2500);
+ //       uart_transmit(hello_message,2,1000);
 
         delay_ms(3000);
         
