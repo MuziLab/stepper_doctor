@@ -170,10 +170,11 @@ void palse_times_set_2(uint32_t npwm)
 {
     if (npwm == 0)
         return;
-    HAL_TIM_PWM_Start(&palse_timer_chy_handle_2, PALSE_TIMER_CHY_2);
+    
     g_npwm_remain_2 = npwm;                                                   /* 保存脉冲个数 */
     HAL_TIM_GenerateEvent(&palse_timer_chy_handle_2, TIM_EVENTSOURCE_UPDATE); /* 产生一次更新事件,在中断里面处理脉冲输出 */
     __HAL_TIM_ENABLE(&palse_timer_chy_handle_2);                              /* 使能定时器TIMX */
+    HAL_TIM_PWM_Start(&palse_timer_chy_handle_2, PALSE_TIMER_CHY_2);
 }
 
 /**
